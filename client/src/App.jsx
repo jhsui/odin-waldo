@@ -26,6 +26,8 @@ function App() {
   });
 
   function handleClick(e) {
+    e.stopPropagation();
+
     setTargetsObj((previousTargetsObj) => ({
       display: !previousTargetsObj.display,
       position: {
@@ -35,11 +37,7 @@ function App() {
     }));
   }
 
-  function handleImgOutsideClick(e) {
-    if (e.target.id === "waldoImg") {
-      return;
-    }
-
+  function handleImgOutsideClick() {
     setTargetsObj({
       ...targetsObj,
       display: false,
