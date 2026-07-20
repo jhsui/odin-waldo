@@ -7,8 +7,8 @@ import "./App.css";
 import Targets from "./Targets";
 
 function App() {
+  // Set up a timer
   const [timer, setTimer] = useState(0);
-
   useEffect(() => {
     const intervalId = setInterval(() => {
       setTimer((previousTimer) => previousTimer + 1);
@@ -17,6 +17,11 @@ function App() {
     return () => clearInterval(intervalId);
   }, []);
 
+  // Set up the coordinates
+  const [imgCoors, setImgCoors] = useState({
+    X: 0,
+    Y: 0,
+  });
   const [targetsObj, setTargetsObj] = useState({
     display: false,
     position: {
@@ -26,18 +31,34 @@ function App() {
   });
 
   function handleClick(e) {
-    e.stopPropagation();
+    const rect = e.currentTarget.getBoundingClientRect();
+
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    console.log(x / rect.width);
+    console.log(y / rect.height);
 
     setTargetsObj((previousTargetsObj) => ({
       display: !previousTargetsObj.display,
       position: {
-        X: e.clientX,
-        Y: e.clientY,
+        X: x,
+        Y: y,
       },
     }));
+
+    setImgCoors({
+      X: rect.width,
+      Y: rect.height,
+    });
   }
 
-  function handleImgOutsideClick() {
+  function handleImgOutsideClick(e) {
+    // Avoided using e.stopPropagation
+    if (e.target.id === "waldoImg") {
+      return;
+    }
+
     setTargetsObj({
       ...targetsObj,
       display: false,
@@ -54,6 +75,9 @@ function App() {
           Timer: {Math.floor(timer / 60)}:{String(timer % 60).padStart(2, "0")}
         </p>
         <Targets
+          imgCoors={imgCoors}
+          targetsObj={targetsObj}
+
           style={{
             "--positionX": `${targetsObj.position.X}px`,
             "--positionY": `${targetsObj.position.Y}px`,
