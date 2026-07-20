@@ -7,6 +7,7 @@ function figureValidator(req, res, name) {
   };
 
   const { targetsObj, imgCoors } = req.body;
+  let { list } = req.body;
 
   const ratioX = targetsObj.position.X / imgCoors.X;
   const ratioY = targetsObj.position.Y / imgCoors.Y;
@@ -23,15 +24,20 @@ function figureValidator(req, res, name) {
     return res.json({
       message: `Wrong tagging ${name}`,
       result: false,
+      list,
     });
   }
 
   console.log("success");
+  list = list.filter((e) => e !== name);
   return res.json({
     message: `Successfully find ${name}`,
-    result: false,
+    result: true,
+    list,
   });
 }
+
+function gameHandler(req, res) {}
 
 export default {
   figureValidator,
