@@ -30,6 +30,16 @@ function figureValidator(req, res, name) {
 
   console.log("success");
   list = list.filter((e) => e !== name);
+
+  if (list.length === 0) {
+    return res.json({
+      message: `Successfully find ${name}`,
+      result: true,
+      list,
+      gameOver: true,
+    });
+  }
+
   return res.json({
     message: `Successfully find ${name}`,
     result: true,
