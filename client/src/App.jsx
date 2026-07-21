@@ -3,15 +3,24 @@ import "./App.css";
 import Targets from "./Targets";
 
 function App() {
-  // Set up a timer
+  // Set up the timer
   const [timer, setTimer] = useState(0);
+  const [isRunning, setIsRunning] = useState(true);
+
   useEffect(() => {
+    if (!isRunning) {
+      return;
+    }
+    const startTime = Date.now();
+
     const intervalId = setInterval(() => {
-      setTimer((previousTimer) => previousTimer + 1);
-    }, 1000);
+      const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+
+      setTimer(elapsedSeconds);
+    }, 250);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [isRunning]);
 
   // Set up the coordinates
   const [imgCoors, setImgCoors] = useState({
@@ -70,7 +79,10 @@ function App() {
         <p>
           Timer: {Math.floor(timer / 60)}:{String(timer % 60).padStart(2, "0")}
         </p>
+
         <Targets
+          timer={timer}
+          stopTimer={() => setIsRunning(false)}
           imgCoors={imgCoors}
           targetsObj={targetsObj}
 
@@ -80,6 +92,7 @@ function App() {
           }}
           className={`absolute top-(--positionY) left-(--positionX) ${targetsObj.display ? "visible" : "invisible"}`}
         ></Targets>
+
         <img
           id="waldoImg"
           src="../public/moon-colony.webp"
