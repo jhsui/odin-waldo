@@ -14,13 +14,18 @@ function App() {
     const startTime = Date.now();
 
     const intervalId = setInterval(() => {
-      const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+      // const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+      const elapsedMilliSeconds = Math.floor(Date.now() - startTime);
 
-      setTimer(elapsedSeconds);
-    }, 250);
+      setTimer(elapsedMilliSeconds);
+    }, 1);
 
     return () => clearInterval(intervalId);
   }, [isRunning]);
+
+  const totalSeconds = Math.floor(timer / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
 
   // Set up the coordinates
   const [imgCoors, setImgCoors] = useState({
@@ -77,7 +82,8 @@ function App() {
         onClick={(e) => handleImgOutsideClick(e)}
       >
         <p>
-          Timer: {Math.floor(timer / 60)}:{String(timer % 60).padStart(2, "0")}
+          Timer: {String(minutes).padStart(2, "0")}:
+          {String(seconds).padStart(2, "0")}
         </p>
 
         <Targets

@@ -1,6 +1,29 @@
 function GameResult({ gameOver, onClose, timer }) {
   if (!gameOver) return null;
 
+  function formatTime(milliseconds) {
+    const totalCentiseconds = Math.floor(milliseconds / 10);
+
+    const hours = Math.floor(totalCentiseconds / 360000);
+    const minutes = Math.floor((totalCentiseconds % 360000) / 6000);
+    const seconds = Math.floor((totalCentiseconds % 6000) / 100);
+    const centiseconds = totalCentiseconds % 100;
+
+    const formattedSeconds =
+      `${String(seconds).padStart(2, "0")}.` +
+      String(centiseconds).padStart(2, "0");
+
+    if (hours > 0) {
+      return `${hours}:${String(minutes).padStart(2, "0")}:${formattedSeconds}`;
+    }
+
+    if (minutes > 0) {
+      return `${minutes}:${formattedSeconds}`;
+    }
+
+    return formattedSeconds;
+  }
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
@@ -37,10 +60,7 @@ function GameResult({ gameOver, onClose, timer }) {
           Congratulations! You completed the game.
         </p>
 
-        <p>
-          Time used: {Math.floor(timer / 60)}:
-          {String(timer % 60).padStart(2, "0")}
-        </p>
+        <p>Time used: {formatTime(timer)}</p>
 
         <button
           type="button"
