@@ -16,4 +16,6 @@ router.post("/wenda/validation", (req, res) =>
   controller.figureValidator(req, res, "wenda"),
 );
 
+router.post("/resultSubmit", controller.resultSubmitPost);
+
 export default router;

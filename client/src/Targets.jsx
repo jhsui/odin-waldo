@@ -10,6 +10,8 @@ function Targets({ style, className, imgCoors, targetsObj, timer, stopTimer }) {
   }
 
   async function handleButtonClick(name) {
+    console.log(timer);
+
     try {
       const res = await fetch(`http://localhost:8080/${name}/validation`, {
         method: "POST",

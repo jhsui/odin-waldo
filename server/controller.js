@@ -1,3 +1,20 @@
+import fs from "node:fs/promises";
+
+async function saveInJson(newRecord) {
+  try {
+    const fileContent = await fs.readFile("./results.json", "utf8");
+    const data = fileContent.trim() ? JSON.parse(fileContent) : [];
+
+    data.push(newRecord);
+
+    await fs.writeFile("./results.json", JSON.stringify(data, null, 2), "utf8");
+
+    console.log("JSON file written");
+  } catch (error) {
+    console.error("Failed to write file:", error);
+  }
+}
+
 function figureValidator(req, res, name) {
   const figureArrayObj = {
     waldo: [0.39846, 0.40955, 0.60915, 0.6597],
@@ -47,8 +64,17 @@ function figureValidator(req, res, name) {
   });
 }
 
-function gameHandler(req, res) {}
+function resultSubmitPost(req, res) {
+  const { username, timer } = req.body;
+
+  saveInJson({ username, timer });
+
+  return res.json({
+    message: "saved!",
+  });
+}
 
 export default {
   figureValidator,
+  resultSubmitPost,
 };

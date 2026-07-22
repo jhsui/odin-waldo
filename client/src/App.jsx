@@ -11,14 +11,14 @@ function App() {
     if (!isRunning) {
       return;
     }
-    const startTime = Date.now();
+    const startTime = performance.now();
 
     const intervalId = setInterval(() => {
-      // const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
-      const elapsedMilliSeconds = Math.floor(Date.now() - startTime);
+      // const elapsedSeconds = Math.floor((performance.now() - startTime) / 1000);
+      const elapsedMilliSeconds = Math.floor(performance.now() - startTime);
 
       setTimer(elapsedMilliSeconds);
-    }, 1);
+    }, 10);
 
     return () => clearInterval(intervalId);
   }, [isRunning]);
