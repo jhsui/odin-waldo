@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import Targets from "./Targets";
+import Leaderboard from "./Leaderboard";
 
 function App() {
   // Set up the timer
   const [timer, setTimer] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
 
   useEffect(() => {
     if (!isRunning) {
@@ -106,6 +108,15 @@ function App() {
           className="w-7xl"
           onClick={handleClick}
         />
+
+        <button
+          type="button"
+          onClick={() => setShowLeaderboard(!showLeaderboard)}
+        >
+          Leaderboard
+        </button>
+
+        {showLeaderboard && <Leaderboard />}
       </div>
     </>
   );

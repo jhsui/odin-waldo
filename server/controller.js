@@ -1,18 +1,29 @@
 import fs from "node:fs/promises";
 
 async function saveInJson(newRecord) {
+  let data = [];
+
   try {
     const fileContent = await fs.readFile("./results.json", "utf8");
-    const data = fileContent.trim() ? JSON.parse(fileContent) : [];
 
-    data.push(newRecord);
+    if (fileContent.trim()) {
+      data = JSON.parse(fileContent);
+    }
 
-    await fs.writeFile("./results.json", JSON.stringify(data, null, 2), "utf8");
-
-    console.log("JSON file written");
+    if (!Array.isArray(data)) {
+      throw new TypeError("results.json must contain an array");
+    }
   } catch (error) {
-    console.error("Failed to write file:", error);
+    if (error.code !== "ENOENT") {
+      throw error;
+    }
   }
+
+  data.push(newRecord);
+
+  await fs.writeFile("./results.json", JSON.stringify(data, null, 2), "utf8");
+
+  console.log("JSON file written");
 }
 
 function figureValidator(req, res, name) {
@@ -64,18 +75,38 @@ function figureValidator(req, res, name) {
   });
 }
 
-function resultSubmitPost(req, res) {
+async function resultSubmitPost(req, res) {
   const { username, timer } = req.body;
 
-  saveInJson({ username, timer });
+  try {
+    await saveInJson({ username, timer, date: Date.now() });
+  } catch (error) {
+    console.error("Failed to save record:", error);
+  }
 
   return res.json({
     message: "Submission successful",
-    // submissionStatus: true,
   });
+}
+
+async function getLeaderboard(req, res) {
+  try {
+    // utf8 ?
+    const recordsJSON = await fs.readFile("./results.json", "utf8");
+    // const data = JSON.parse(text);
+    return res.send(recordsJSON);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      console.log("File does not exist");
+      // Need to create the file here.
+    } else {
+      throw error;
+    }
+  }
 }
 
 export default {
   figureValidator,
   resultSubmitPost,
+  getLeaderboard,
 };

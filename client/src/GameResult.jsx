@@ -9,7 +9,7 @@ function GameResult({ gameOver, timer }) {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:8080/resultSubmit", {
+      const res = await fetch("http://localhost:8080/result-submission", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
