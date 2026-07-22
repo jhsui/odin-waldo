@@ -38,11 +38,7 @@ function Targets({ style, className, imgCoors, targetsObj, timer, stopTimer }) {
 
   return (
     <>
-      <GameResult
-        gameOver={gameOver}
-        onClose={() => setGameOver(false)}
-        timer={timer}
-      />
+      <GameResult gameOver={gameOver} timer={timer} />
 
       <div
         style={style}

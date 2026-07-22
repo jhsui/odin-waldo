@@ -1,8 +1,9 @@
 import { useState } from "react";
 
-function GameResult({ gameOver, onClose, timer }) {
+function GameResult({ gameOver, timer }) {
   // if (!gameOver) return null;
   const [username, setUsername] = useState("");
+  const [submissionStatus, setSubmissionStatus] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,6 +19,9 @@ function GameResult({ gameOver, onClose, timer }) {
 
       const data = await res.json();
 
+      if (data.message) {
+        setSubmissionStatus(true);
+      }
       //
       console.log("STATUS:", res.status);
       console.log("RESPONSE:", data);
@@ -41,7 +45,7 @@ function GameResult({ gameOver, onClose, timer }) {
           >
             <button
               type="button"
-              onClick={onClose}
+              onClick={() => window.location.reload()}
               className="absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-full text-2xl text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
             >
               &times;
@@ -64,17 +68,26 @@ function GameResult({ gameOver, onClose, timer }) {
 
             <p>Time used: {formatTime(timer)}</p>
 
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="username">Your name:</label>
+            <form onSubmit={handleSubmit} className="border">
+              <label htmlFor="username" className="border-4">
+                Your name:
+              </label>
               <input
                 type="text"
                 id="username"
                 name="username"
                 onChange={(e) => setUsername(e.target.value)}
+                className="border-2"
               />
 
-              <button type="submit">Submit</button>
+              <button type="submit" className="border-8">
+                Submit
+              </button>
             </form>
+
+            {submissionStatus && (
+              <i className="text-red-500">Submission successful!</i>
+            )}
 
             <button
               type="button"

@@ -70,7 +70,8 @@ function resultSubmitPost(req, res) {
   saveInJson({ username, timer });
 
   return res.json({
-    message: "saved!",
+    message: "Submission successful",
+    // submissionStatus: true,
   });
 }
 
