@@ -5,10 +5,6 @@ function Targets({ style, className, imgCoors, targetsObj, timer, stopTimer }) {
   const [list, setList] = useState(["waldo", "odlaw", "wizard", "wenda"]);
   const [gameOver, setGameOver] = useState(false);
 
-  function capitalizeFirstLetter(val) {
-    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
-  }
-
   async function handleButtonClick(name) {
     console.log(timer);
 
@@ -57,6 +53,10 @@ function Targets({ style, className, imgCoors, targetsObj, timer, stopTimer }) {
       </div>
     </>
   );
+}
+
+function capitalizeFirstLetter(val) {
+  return String(val).charAt(0).toUpperCase() + String(val).slice(1);
 }
 
 export default Targets;

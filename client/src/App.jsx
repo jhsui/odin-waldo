@@ -8,6 +8,7 @@ function App() {
   const [timer, setTimer] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [pointerPosition, setPointerPosition] = useState({ X: 0, Y: 0 });
 
   useEffect(() => {
     if (!isRunning) {
@@ -48,6 +49,8 @@ function App() {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
+    setPointerPosition({ X: e.clientX, Y: e.clientY });
+
     console.log(x / rect.width);
     console.log(y / rect.height);
 
@@ -83,7 +86,7 @@ function App() {
         className="relative flex min-h-screen flex-col items-center"
         onClick={(e) => handleImgOutsideClick(e)}
       >
-        <p>
+        <p className="font-mono">
           Timer: {String(minutes).padStart(2, "0")}:
           {String(seconds).padStart(2, "0")}
         </p>
@@ -95,9 +98,10 @@ function App() {
           targetsObj={targetsObj}
 
           style={{
-            "--positionX": `${targetsObj.position.X}px`,
-            "--positionY": `${targetsObj.position.Y}px`,
+            "--positionX": `${pointerPosition.X}px`,
+            "--positionY": `${pointerPosition.Y}px`,
           }}
+
           className={`absolute top-(--positionY) left-(--positionX) ${targetsObj.display ? "visible" : "invisible"}`}
         ></Targets>
 
@@ -112,6 +116,7 @@ function App() {
         <button
           type="button"
           onClick={() => setShowLeaderboard(!showLeaderboard)}
+          className="m-3 border-2 p-1"
         >
           Leaderboard
         </button>
