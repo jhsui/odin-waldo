@@ -86,11 +86,78 @@ function App() {
         className="relative flex min-h-screen flex-col items-center"
         onClick={(e) => handleImgOutsideClick(e)}
       >
-        <p className="font-mono">
-          Timer: {String(minutes).padStart(2, "0")}:
-          {String(seconds).padStart(2, "0")}
-        </p>
+        <h1 className="text-heading mb-4 flex items-center text-3xl font-bold md:text-5xl lg:text-6xl">
+          <img src="/waldoheader.png" alt="" className="w-24" />
+          Where is Waldo?
+        </h1>
 
+        <div className="my-2 h-px w-full shrink-0 bg-gray-300" />
+
+        <div className="mx-auto mt-4 mb-1.5 box-border flex w-[min(1100px,calc(100%-24px))] items-center justify-between gap-4 rounded-lg border border-[#dbe3ef] bg-white p-3 shadow-[0_8px_24px_rgba(15,23,42,0.08)] max-[600px]:mx-0 max-[600px]:mt-2.5 max-[600px]:w-full max-[600px]:flex-col max-[600px]:items-stretch max-[600px]:gap-2 max-[600px]:p-2.5">
+          <div>
+            <h2 className="mb-1 text-[22px] leading-[1.15] font-bold text-[#111827] max-[600px]:text-lg">
+              Level: Hard Hunt
+            </h2>{" "}
+            <p className="m-0 text-sm leading-[1.35] text-[#475569]">
+              Find Waldo, Odlaw, Wizard, and Wenda.
+            </p>
+          </div>
+          <div className="box-border flex min-h-13 flex-col justify-center gap-1 rounded-lg border border-[#e2e8f0] bg-[#f8fafc] px-2.5 py-2 font-mono max-[600px]:min-h-11.5 max-[600px]:gap-0.75 max-[600px]:px-2 max-[600px]:py-1.75">
+            <span className="text-[11px] leading-none font-bold text-slate-500 uppercase">
+              Time
+            </span>
+            <strong className="text-[17px] leading-[1.1] text-[#0f172a] max-[600px]:text-base">
+              {String(minutes).padStart(2, "0")}:
+              {String(seconds).padStart(2, "0")}
+            </strong>
+          </div>
+        </div>
+
+        <div className="sticky top-0 z-1000 mt-2.5 flex w-full items-center justify-center gap-(--status-item-gap) [--status-hint-align-offset:calc(var(--status-item-gap)+var(--status-time-row-height))] [--status-item-gap:5px] [--status-time-row-height:14px]">
+          <div>
+            <img
+              src="/avatars/waldo.webp"
+              alt=""
+              className="size-12.5! rounded-full border-2 border-transparent bg-white object-cover transition-all duration-300 ease-[ease]"
+            />
+            <div className="pointer-events-none absolute -top-1.5 -right-1.5 z-10 hidden rounded-full bg-[#22c55e] px-1.5 py-0.5 text-sm font-bold text-white">
+              ✔
+            </div>
+          </div>
+
+          <div>
+            <img
+              src="/avatars/odlaw.webp"
+              alt=""
+              className="size-12.5! rounded-full border-2 border-transparent bg-white object-cover transition-all duration-300 ease-[ease]"
+            />
+            <div className="pointer-events-none absolute -top-1.5 -right-1.5 z-10 hidden rounded-full bg-[#22c55e] px-1.5 py-0.5 text-sm font-bold text-white">
+              ✔
+            </div>
+          </div>
+
+          <div>
+            <img
+              src="/avatars/wizard.webp"
+              alt=""
+              className="size-12.5! rounded-full border-2 border-transparent bg-white object-cover transition-all duration-300 ease-[ease]"
+            />
+            <div className="pointer-events-none absolute -top-1.5 -right-1.5 z-10 hidden rounded-full bg-[#22c55e] px-1.5 py-0.5 text-sm font-bold text-white">
+              ✔
+            </div>
+          </div>
+
+          <div>
+            <img
+              src="/avatars/wenda.webp"
+              alt=""
+              className="size-12.5! rounded-full border-2 border-transparent bg-white object-cover transition-all duration-300 ease-[ease]"
+            />
+            <div className="pointer-events-none absolute -top-1.5 -right-1.5 z-10 hidden rounded-full bg-[#22c55e] px-1.5 py-0.5 text-sm font-bold text-white">
+              ✔
+            </div>
+          </div>
+        </div>
         <Targets
           timer={timer}
           stopTimer={() => setIsRunning(false)}
@@ -102,21 +169,21 @@ function App() {
             "--positionY": `${pointerPosition.Y}px`,
           }}
 
-          className={`absolute top-(--positionY) left-(--positionX) ${targetsObj.display ? "visible" : "invisible"}`}
+          className={`absolute top-(--positionY) left-(--positionX) z-[9999] block w-[180px] rounded-xl bg-white px-0 py-1.5 font-[Arial,sans-serif] shadow-[0_4px_22px_rgba(0,0,0,0.25)] ${targetsObj.display ? "visible" : "invisible"}`}
         ></Targets>
 
         <img
           id="waldoImg"
-          src="../public/moon-colony.webp"
+          src="/moon-colony.webp"
           alt="waldo"
-          className="w-7xl"
+          className="w-full cursor-crosshair"
           onClick={handleClick}
         />
 
         <button
           type="button"
           onClick={() => setShowLeaderboard(!showLeaderboard)}
-          className="m-3 border-2 p-1"
+          className="m-14 min-h-11 cursor-pointer rounded-lg border-2 border-[#047857] bg-[#059669] px-4 text-[15px] font-bold whitespace-nowrap text-white shadow-[0_3px_10px_rgba(5,150,105,0.22)] not-disabled:hover:bg-[#047857] not-disabled:hover:outline-none focus-visible:bg-[#047857] focus-visible:outline-none"
         >
           Leaderboard
         </button>
