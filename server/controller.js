@@ -56,10 +56,15 @@ function figureValidator(req, res, name) {
     });
   }
 
-  console.log("success");
-  list = list.filter((e) => e !== name);
+  //
+  console.log(`success ${name}`);
+  list.forEach((element) => {
+    if (element.name === name) {
+      element.clicked = true;
+    }
+  });
 
-  if (list.length === 0) {
+  if (list.every((element) => element.clicked)) {
     return res.json({
       message: `Successfully find ${name}`,
       result: true,

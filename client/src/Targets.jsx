@@ -1,8 +1,16 @@
 import { useState } from "react";
 import GameResult from "./gameResult";
 
-function Targets({ style, className, imgCoors, targetsObj, timer, stopTimer }) {
-  const [list, setList] = useState(["waldo", "odlaw", "wizard", "wenda"]);
+function Targets({
+  style,
+  className,
+  imgCoors,
+  targetsObj,
+  timer,
+  stopTimer,
+  list,
+  listUpdate,
+}) {
   const [gameOver, setGameOver] = useState(false);
 
   async function handleButtonClick(name) {
@@ -19,7 +27,8 @@ function Targets({ style, className, imgCoors, targetsObj, timer, stopTimer }) {
 
       const data = await res.json();
 
-      setList(data.list);
+      listUpdate(data.list);
+
       if (data.gameOver) {
         stopTimer();
         setGameOver(true);
@@ -40,21 +49,24 @@ function Targets({ style, className, imgCoors, targetsObj, timer, stopTimer }) {
         style={style}
         className={`${className} m-1 flex flex-col gap-1 bg-white`}
       >
-        {list.map((name) => (
-          <button
-            key={name}
-            type="button"
-            className="flex w-full cursor-pointer items-center gap-2.5 border-0 bg-transparent px-3.5 py-2.5 text-left text-base text-[#333]"
-            onClick={() => handleButtonClick(name)}
-          >
-            <img
-              src={`/avatars/${name}.webp`}
-              alt={`${name}`}
-              className="!size-7 object-contain"
-            />
-            <span>{capitalizeFirstLetter(name)}</span>
-          </button>
-        ))}
+        {list
+          .filter((element) => !element.clicked)
+          .map((element) => element.name)
+          .map((name) => (
+            <button
+              key={name}
+              type="button"
+              className="flex w-full cursor-pointer items-center gap-2.5 border-0 bg-transparent px-3.5 py-2.5 text-left text-base text-[#333]"
+              onClick={() => handleButtonClick(name)}
+            >
+              <img
+                src={`/avatars/${name}.webp`}
+                alt={`${name}`}
+                className="size-7! object-contain"
+              />
+              <span>{capitalizeFirstLetter(name)}</span>
+            </button>
+          ))}
       </div>
     </>
   );

@@ -10,6 +10,13 @@ function App() {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [pointerPosition, setPointerPosition] = useState({ X: 0, Y: 0 });
 
+  const [list, setList] = useState([
+    { name: "waldo", clicked: false },
+    { name: "odlaw", clicked: false },
+    { name: "wizard", clicked: false },
+    { name: "wenda", clicked: false },
+  ]);
+
   useEffect(() => {
     if (!isRunning) {
       return;
@@ -113,63 +120,39 @@ function App() {
           </div>
         </div>
 
-        <div className="sticky top-0 z-1000 mt-2.5 flex w-full items-center justify-center gap-(--status-item-gap) [--status-hint-align-offset:calc(var(--status-item-gap)+var(--status-time-row-height))] [--status-item-gap:5px] [--status-time-row-height:14px]">
-          <div>
-            <img
-              src="/avatars/waldo.webp"
-              alt=""
-              className="size-12.5! rounded-full border-2 border-transparent bg-white object-cover transition-all duration-300 ease-[ease]"
-            />
-            <div className="pointer-events-none absolute -top-1.5 -right-1.5 z-10 hidden rounded-full bg-[#22c55e] px-1.5 py-0.5 text-sm font-bold text-white">
-              ✔
-            </div>
-          </div>
+        <div className="sticky top-0 z-1000 mt-2.5 flex w-full items-center justify-center gap-(--status-item-gap)">
+          {list.map((element) => (
+            <div key={element.name} className="relative">
+              <img
+                src={`/avatars/${element.name}.webp`}
+                alt={element.name}
+                className="size-12.5! rounded-full border-2 border-transparent bg-white object-cover transition-all duration-300 ease-[ease]"
+              />
 
-          <div>
-            <img
-              src="/avatars/odlaw.webp"
-              alt=""
-              className="size-12.5! rounded-full border-2 border-transparent bg-white object-cover transition-all duration-300 ease-[ease]"
-            />
-            <div className="pointer-events-none absolute -top-1.5 -right-1.5 z-10 hidden rounded-full bg-[#22c55e] px-1.5 py-0.5 text-sm font-bold text-white">
-              ✔
+              {element.clicked && (
+                <div className="pointer-events-none absolute -top-1.5 -right-1.5 z-10 rounded-full bg-[#22c55e] px-1.5 py-0.5 text-sm font-bold text-white">
+                  ✔
+                </div>
+              )}
             </div>
-          </div>
-
-          <div>
-            <img
-              src="/avatars/wizard.webp"
-              alt=""
-              className="size-12.5! rounded-full border-2 border-transparent bg-white object-cover transition-all duration-300 ease-[ease]"
-            />
-            <div className="pointer-events-none absolute -top-1.5 -right-1.5 z-10 hidden rounded-full bg-[#22c55e] px-1.5 py-0.5 text-sm font-bold text-white">
-              ✔
-            </div>
-          </div>
-
-          <div>
-            <img
-              src="/avatars/wenda.webp"
-              alt=""
-              className="size-12.5! rounded-full border-2 border-transparent bg-white object-cover transition-all duration-300 ease-[ease]"
-            />
-            <div className="pointer-events-none absolute -top-1.5 -right-1.5 z-10 hidden rounded-full bg-[#22c55e] px-1.5 py-0.5 text-sm font-bold text-white">
-              ✔
-            </div>
-          </div>
+          ))}
         </div>
+
         <Targets
           timer={timer}
           stopTimer={() => setIsRunning(false)}
           imgCoors={imgCoors}
           targetsObj={targetsObj}
 
+          list={list}
+          listUpdate={(newList) => setList(newList)}
+
           style={{
             "--positionX": `${pointerPosition.X}px`,
             "--positionY": `${pointerPosition.Y}px`,
           }}
 
-          className={`absolute top-(--positionY) left-(--positionX) z-[9999] block w-[180px] rounded-xl bg-white px-0 py-1.5 font-[Arial,sans-serif] shadow-[0_4px_22px_rgba(0,0,0,0.25)] ${targetsObj.display ? "visible" : "invisible"}`}
+          className={`absolute top-(--positionY) left-(--positionX) z-9999 block w-45 rounded-xl bg-white px-0 py-1.5 font-[Arial,sans-serif] shadow-[0_4px_22px_rgba(0,0,0,0.25)] ${targetsObj.display ? "visible" : "invisible"}`}
         ></Targets>
 
         <img
