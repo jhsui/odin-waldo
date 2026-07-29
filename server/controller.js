@@ -1,29 +1,17 @@
 import fs from "node:fs/promises";
+import { prisma } from "./lib/prisma.js";
 
-async function saveInJson(newRecord) {
-  let data = [];
-
+async function saveResult(newRecord) {
   try {
-    const fileContent = await fs.readFile("./results.json", "utf8");
-
-    if (fileContent.trim()) {
-      data = JSON.parse(fileContent);
-    }
-
-    if (!Array.isArray(data)) {
-      throw new TypeError("results.json must contain an array");
-    }
+    await prisma.leaderboard.create({
+      data: {
+        name: newRecord.username,
+        timer: newRecord.timer,
+      },
+    });
   } catch (error) {
-    if (error.code !== "ENOENT") {
-      throw error;
-    }
+    console.error(error);
   }
-
-  data.push(newRecord);
-
-  await fs.writeFile("./results.json", JSON.stringify(data, null, 2), "utf8");
-
-  console.log("JSON file written");
 }
 
 function figureValidator(req, res, name) {
@@ -84,7 +72,7 @@ async function resultSubmitPost(req, res) {
   const { username, timer } = req.body;
 
   try {
-    await saveInJson({ username, timer, date: Date.now() });
+    await saveResult({ username, timer });
   } catch (error) {
     console.error("Failed to save record:", error);
   }
@@ -96,17 +84,11 @@ async function resultSubmitPost(req, res) {
 
 async function getLeaderboard(req, res) {
   try {
-    // utf8 ?
-    const recordsJSON = await fs.readFile("./results.json", "utf8");
-    // const data = JSON.parse(text);
-    return res.send(recordsJSON);
+    const records = await prisma.leaderboard.findMany();
+
+    return res.send(JSON.stringify(records));
   } catch (error) {
-    if (error.code === "ENOENT") {
-      console.log("File does not exist");
-      // Need to create the file here.
-    } else {
-      throw error;
-    }
+    console.error(error);
   }
 }
 

@@ -107,7 +107,7 @@ function App() {
         <div className="mx-auto mt-4 mb-1.5 box-border flex w-[min(1100px,calc(100%-24px))] items-center justify-between gap-4 rounded-lg border border-[#dbe3ef] bg-white p-3 shadow-[0_8px_24px_rgba(15,23,42,0.08)] max-[600px]:mx-0 max-[600px]:mt-2.5 max-[600px]:w-full max-[600px]:flex-col max-[600px]:items-stretch max-[600px]:gap-2 max-[600px]:p-2.5">
           <div>
             <h2 className="mb-1 text-[22px] leading-[1.15] font-bold text-[#111827] max-[600px]:text-lg">
-              Level: Hard Hunt
+              Level: Moon Colony
             </h2>{" "}
             <p className="m-0 text-sm leading-[1.35] text-[#475569]">
               Click the image to find Waldo, Odlaw, Wizard, and Wenda.

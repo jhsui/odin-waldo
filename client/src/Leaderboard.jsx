@@ -89,7 +89,7 @@ function Leaderboard({ titleRef }) {
                 </td>
 
                 <td className="border-b border-[#f1f5f9] p-4 text-[15px] text-[#1e293b] max-[600px]:px-1 max-[600px]:py-2 max-[600px]:text-xs">
-                  {record.username}
+                  {record.name}
                 </td>
 
                 <td className="border-b border-[#f1f5f9] p-4 text-[15px] text-[#1e293b] max-[600px]:px-1 max-[600px]:py-2 max-[600px]:text-xs">
