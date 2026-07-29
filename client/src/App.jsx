@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import Targets from "./Targets";
 import Leaderboard from "./Leaderboard";
@@ -50,6 +50,10 @@ function App() {
     },
   });
 
+  // handle leaderboard scroll
+  const openedElementRef = useRef(null);
+
+  // handle click
   function handleClick(e) {
     const rect = e.currentTarget.getBoundingClientRect();
 
@@ -106,7 +110,7 @@ function App() {
               Level: Hard Hunt
             </h2>{" "}
             <p className="m-0 text-sm leading-[1.35] text-[#475569]">
-              Find Waldo, Odlaw, Wizard, and Wenda.
+              Click the image to find Waldo, Odlaw, Wizard, and Wenda.
             </p>
           </div>
           <div className="box-border flex min-h-13 flex-col justify-center gap-1 rounded-lg border border-[#e2e8f0] bg-[#f8fafc] px-2.5 py-2 font-mono max-[600px]:min-h-11.5 max-[600px]:gap-0.75 max-[600px]:px-2 max-[600px]:py-1.75">
@@ -166,12 +170,12 @@ function App() {
         <button
           type="button"
           onClick={() => setShowLeaderboard(!showLeaderboard)}
-          className="m-14 min-h-11 cursor-pointer rounded-lg border-2 border-[#047857] bg-[#059669] px-4 text-[15px] font-bold whitespace-nowrap text-white shadow-[0_3px_10px_rgba(5,150,105,0.22)] not-disabled:hover:bg-[#047857] not-disabled:hover:outline-none focus-visible:bg-[#047857] focus-visible:outline-none"
+          className="m-10 min-h-11 cursor-pointer rounded-lg border-2 border-[#047857] bg-[#059669] px-4 text-[15px] font-bold whitespace-nowrap text-white shadow-[0_3px_10px_rgba(5,150,105,0.22)] not-disabled:hover:bg-[#047857] not-disabled:hover:outline-none focus-visible:bg-[#047857] focus-visible:outline-none"
         >
           Leaderboard
         </button>
 
-        {showLeaderboard && <Leaderboard />}
+        {showLeaderboard && <Leaderboard titleRef={openedElementRef} />}
       </div>
     </>
   );
