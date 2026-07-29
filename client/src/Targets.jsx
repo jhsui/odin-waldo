@@ -47,7 +47,7 @@ function Targets({
 
       <div
         style={style}
-        className={`${className} m-1 flex flex-col gap-1 bg-white`}
+        className={` ${className} flex flex-col gap-1 bg-white`}
       >
         {list
           .filter((element) => !element.clicked)

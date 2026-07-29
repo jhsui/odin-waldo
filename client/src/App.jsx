@@ -156,7 +156,7 @@ function App() {
             "--positionY": `${pointerPosition.Y}px`,
           }}
 
-          className={`absolute top-(--positionY) left-(--positionX) z-9999 block w-45 rounded-xl bg-white px-0 py-1.5 font-[Arial,sans-serif] shadow-[0_4px_22px_rgba(0,0,0,0.25)] ${targetsObj.display ? "visible" : "invisible"}`}
+          className={`fixed top-(--positionY) left-(--positionX) z-9999 block w-45 rounded-xl bg-white px-0 py-1.5 font-[Arial,sans-serif] shadow-[0_4px_22px_rgba(0,0,0,0.25)] ${targetsObj.display ? "visible" : "invisible"}`}
         ></Targets>
 
         <img
