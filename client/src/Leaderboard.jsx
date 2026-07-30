@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { API_URL } from "./config";
 
 function Leaderboard({ titleRef }) {
   const [records, setRecords] = useState([]);
@@ -14,7 +15,7 @@ function Leaderboard({ titleRef }) {
     async function loadLeaderboard() {
       try {
         // 1. Fetch the file via its relative or absolute path
-        const res = await fetch("http://localhost:8080/leaderboard");
+        const res = await fetch(`${API_URL}/leaderboard`);
 
         // 2. Ensure the network request was successful
         if (!res.ok) {

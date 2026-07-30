@@ -1,5 +1,6 @@
 import { useState } from "react";
 import GameResult from "./gameResult";
+import { API_URL } from "./config";
 
 function Targets({
   style,
@@ -17,7 +18,7 @@ function Targets({
     console.log(timer);
 
     try {
-      const res = await fetch(`http://localhost:8080/${name}/validation`, {
+      const res = await fetch(`${API_URL}/${name}/validation`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

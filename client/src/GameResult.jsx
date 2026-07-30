@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { API_URL } from "./config";
 
 function GameResult({ gameOver, timer }) {
   // if (!gameOver) return null;
@@ -9,7 +10,7 @@ function GameResult({ gameOver, timer }) {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:8080/result-submission", {
+      const res = await fetch(`${API_URL}/result-submission`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
