@@ -1,5 +1,5 @@
 import { useState } from "react";
-import GameResult from "./gameResult";
+import GameResult from "./GameResult";
 import { API_URL } from "./config";
 
 function Targets({
