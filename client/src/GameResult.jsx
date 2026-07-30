@@ -9,6 +9,8 @@ function GameResult({ gameOver, timer }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (submissionStatus) return;
+
     try {
       const res = await fetch(`${API_URL}/result-submission`, {
         method: "POST",
@@ -94,6 +96,7 @@ function GameResult({ gameOver, timer }) {
 
               <button
                 type="submit"
+                disabled={submissionStatus}
                 className="w-full rounded-lg bg-green-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:outline-none active:bg-green-800"
               >
                 Submit score
