@@ -1,36 +1,54 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { API_URL } from "./config";
 
 function GameResult({ gameOver, timer }) {
   // if (!gameOver) return null;
   const [username, setUsername] = useState("");
   const [submissionStatus, setSubmissionStatus] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const submittingRef = useRef(false);
+  const submissionIdRef = useRef(null);
+
+  if (submissionIdRef.current === null) {
+    submissionIdRef.current = crypto.randomUUID();
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (submissionStatus) return;
+    // Synchronous protection against rapid repeated clicks
+    if (submittingRef.current || submissionStatus) return;
+
+    submittingRef.current = true;
+    setIsSubmitting(true);
 
     try {
       const res = await fetch(`${API_URL}/result-submission`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Idempotency-Key": submissionIdRef.current,
         },
-        body: JSON.stringify({ username, timer }),
+        body: JSON.stringify({
+          username: username.trim(),
+          timer,
+        }),
       });
 
       const data = await res.json();
 
-      if (data.message) {
-        setSubmissionStatus(true);
+      if (!res.ok) {
+        throw new Error(data.message || "Submission failed");
       }
-      //
-      console.log("STATUS:", res.status);
-      console.log("RESPONSE:", data);
-      //
+
+      setSubmissionStatus(true);
     } catch (error) {
       console.error("FETCH ERROR:", error);
+
+      // Allow retry with the same idempotency key
+      submittingRef.current = false;
+      setIsSubmitting(false);
     }
   };
 
@@ -87,19 +105,25 @@ function GameResult({ gameOver, timer }) {
                   type="text"
                   id="username"
                   name="username"
+                  required
+                  disabled={isSubmitting || submissionStatus}
                   value={username}
                   onChange={(event) => setUsername(event.target.value)}
                   placeholder="Enter your name"
-                  className="block w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 shadow-sm transition outline-none placeholder:text-gray-400 hover:border-gray-400 focus:border-green-500 focus:ring-2 focus:ring-green-500/20"
+                  className="block w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 shadow-sm transition outline-none placeholder:text-gray-400 disabled:cursor-not-allowed disabled:bg-gray-100"
                 />
               </div>
 
               <button
                 type="submit"
-                disabled={submissionStatus}
-                className="w-full rounded-lg bg-green-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:outline-none active:bg-green-800"
+                disabled={isSubmitting || submissionStatus}
+                className="w-full rounded-lg bg-green-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-green-700 disabled:cursor-not-allowed disabled:bg-gray-400"
               >
-                Submit score
+                {submissionStatus
+                  ? "Score submitted"
+                  : isSubmitting
+                    ? "Submitting…"
+                    : "Submit score"}
               </button>
             </form>
 
