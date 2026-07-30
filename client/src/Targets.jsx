@@ -1,6 +1,7 @@
 import { useState } from "react";
 import GameResult from "./GameResult";
 import { API_URL } from "./config";
+import confetti from "canvas-confetti";
 
 function Targets({
   style,
@@ -13,6 +14,26 @@ function Targets({
   listUpdate,
 }) {
   const [gameOver, setGameOver] = useState(false);
+
+  async function playMusic() {
+    const audio = new Audio("/mixkit-fairy-arcade-sparkle-866.wav");
+    audio.play();
+  }
+
+  function fireConfettiAt(x, y) {
+    const clientX = parseFloat(x);
+    const clientY = parseFloat(y);
+
+    confetti({
+      particleCount: 80,
+      spread: 70,
+      startVelocity: 30,
+      origin: {
+        x: Math.max(0, Math.min(1, clientX / window.innerWidth)),
+        y: Math.max(0, Math.min(1, clientY / window.innerHeight)),
+      },
+    });
+  }
 
   async function handleButtonClick(name) {
     console.log(timer);
@@ -29,6 +50,12 @@ function Targets({
       const data = await res.json();
 
       listUpdate(data.list);
+
+      if (data.result) {
+        playMusic();
+
+        fireConfettiAt(style["--positionX"], style["--positionY"]);
+      }
 
       if (data.gameOver) {
         stopTimer();
